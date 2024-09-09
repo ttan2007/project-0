@@ -15,9 +15,10 @@ class Character:
                 player.inventory.remove(player.inventory["star"])
                 
             else:
-                print(f"{self.name} says: {I see. Keep looking for a star.}")
+                print(self.name + "Says Keep looking")
+            
         else: 
-            print(f"{self.name} says: {I already have one go away!}")
+            print(self.name + "says: I already have one go away!")
 
     def receive_item(self, item):
         self.received = True
