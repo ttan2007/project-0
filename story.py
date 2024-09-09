@@ -12,12 +12,21 @@ def start_your_trip():
     print("Behind you read a sign that reads 'Sludge Swamp 10 miles South'." )
     choice = input("Do you want to go up north or down south? (north/south) ")
     if choice == "north":
-        go_left()
-    if choice == "south":
+        go_north()
+    elif choice == "south":
         go_right()
-    else:
-        print("Invalid choice. Please choose 'north' or 'south'.")
-        start_your_trip()
+
+def go_north():
+    print("You walk into the ominous graveyard. ")
+    print("You run into an old man holding a lantern and a shovel. ")
+    choice = input("Do you talk to him or run away? (talk/run)")
+    if choice == "talk":
+        talk()
+    elif choice == "run":
+        run()
+
+def talk():
+    print("Old man: Hello.. my name is Jeb. ")
 
     ## print("On the horizon, you see a rusted gate clouded by a sea of deep fog.")
     ## print("Do you wish to solve the puzzle?")
