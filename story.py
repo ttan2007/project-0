@@ -3,7 +3,6 @@ from player import Player
 from wordle import playGame
 from item import Item
 
-# Inventory system
 inventory = []
 
 def start_your_trip():
@@ -15,12 +14,14 @@ def start_your_trip():
     print("Suddenly, a man approaches you with a grin on his face.")
     print("'Hey there! How about a game of rock-paper-scissors?'")
     
-    choice = input("Do you want to play rock-paper-scissors with the man? (yes/no) ").lower()
+    choice = input("Do you want to play rock-paper-scissors or fight him? (play/fight) ").lower()
     
-    if choice == "yes":
+    if choice == "play":
         play_rock_paper_scissors(player1)
+    elif choice == "fight":
+        combat(player1, "Mysterious Man", 100)
     else:
-        print("You decide not to play. The man walks away, leaving you alone.")
+        print("You decide not to interact. The man walks away, leaving you alone.")
     
     print("Ahead of you, a sign reads 'Graveyard 5 miles North'.")
     print("Behind you, a sign reads 'Sludge Swamp 10 miles South'.")
@@ -42,21 +43,78 @@ def play_rock_paper_scissors(player):
     print(f"The man chooses {man_choice}.")
     
     if player_choice == man_choice:
-        print("It's a tie! You both chose the same thing.")
-        play_rock_paper_scissors(player)  # Play again if there's a tie
+        print("It's a tie! You both chose the same thing. The man laughs like a maniac.")
+        play_rock_paper_scissors(player)  
     elif (player_choice == "rock" and man_choice == "scissors") or \
          (player_choice == "scissors" and man_choice == "paper") or \
          (player_choice == "paper" and man_choice == "rock"):
         print("You win the game!")
         give_special_item(player)
     else:
-        print("You lost the game. Better luck next time!")
+        print("You lost. The man frowns in disappointment.")
 
 def give_special_item(player):
     special_item = "Shiny Amulet"
     inventory.append(special_item)
-    print(f"The man hands you a {special_item}. He says, 'This might come in handy later!'")
+    print(f"The man hands you a {special_item}. He says, 'Hold on to this...'")
     print("You put the amulet in your inventory.")
+
+def combat(player, opponent_name, opponent_health):
+    print(f"{opponent_name} challenges you to a fight!")
+    
+    while player.health > 0 and opponent_health > 0:
+        print(f"\nYour Health: {player.health}, {opponent_name}'s Health: {opponent_health}")
+        action = input("Choose your action (attack/block/dodge/countermove): ").lower()
+
+        opponent_action = random.choice(["attack", "block", "dodge", "countermove"])
+        print(f"The {opponent_name} chooses to {opponent_action}.")
+
+        if action == "attack":
+            if opponent_action == "dodge":
+                print(f"{opponent_name} dodges your attack!")
+            elif opponent_action == "block":
+                print(f"{opponent_name} blocks your attack!")
+            else:
+                damage = random.randint(15, 25)
+                opponent_health -= damage
+                print(f"You hit {opponent_name} for {damage} damage!")
+        elif action == "block":
+            print("You prepare to block.")
+        elif action == "dodge":
+            print("You try to dodge the next attack.")
+        elif action == "countermove":
+            if opponent_action == "attack":
+                damage = random.randint(20, 30)
+                opponent_health -= damage
+                print(f"You successfully countered {opponent_name}'s attack and dealt {damage} damage!")
+            else:
+                print(f"You tried to counter but {opponent_name} didn't attack.")
+        else:
+            print("Invalid action, you lose your turn.")
+
+        if opponent_action == "attack":
+            if action == "dodge":
+                print("You dodge the opponent's attack!")
+            elif action == "block":
+                print("You block the opponent's attack!")
+            else:
+                damage = random.randint(10, 20)
+                player.health -= damage
+                print(f"{opponent_name} hits you for {damage} damage!")
+
+    if player.health > 0:
+        print(f"\nYou defeated {opponent_name}!")
+        collect_loot(player)
+    else:
+        print(f"\nYou were defeated by {opponent_name}.")
+        game_over(player)
+
+def collect_loot(player):
+    print("You collect some special items from your defeated opponent.")
+    inventory.append("Healing Potion")
+    inventory.append("Mystic Dagger")
+    inventory.append("Magic Ring")
+    print("You received a Healing Potion, a Mystic Dagger, and a Magic Ring. They are added to your inventory.")
 
 def go_north(player):
     print("You walk into the ominous graveyard.")
@@ -100,8 +158,8 @@ def run_away(player):
     start_your_trip()
 
 def start_quest(player):
-    print("Jeb: There’s a gate at the end of this graveyard, but it’s locked by a puzzle.")
-    print("Would you like to attempt the puzzle?")
+    print("Jeb: There’s a gate at the end of this graveyard, but it’s locked by an old puzzle.")
+    print("Could you please help me open it?")
     choice = input("Y or N? ").upper()
     
     if choice == "Y":
@@ -111,14 +169,15 @@ def start_quest(player):
         start_your_trip()
 
 def play_puzzle(player):
-    print("You must solve a Wordle-like puzzle to open the gate.")
+    print("Jeb pats you on the back. 'Go on then Boy!', he says.")
+    print("After a while of searching you reach the gate.")
     success = playGame("START")  
 
     if success:
         print("You solved the puzzle and opened the gate!")
     else:
-        print("You failed the puzzle and lose 15 health points.")
-        player.health -= 15  
+        print("You failed the puzzle and lose 50 health points.")
+        player.health -= 50  
         print(f"Your health is now {player.health}.")
         
         if player.health <= 0:
@@ -147,27 +206,27 @@ def go_south(player):
 
 def interact_with_boy(player):
     print("The young boy notices you and asks if you have anything interesting.")
-    if "Shiny Amulet" in inventory:
+    action = input("Do you give him the amulet or attack him? (give/attack): ").lower()
+    
+    if action == "give" and "Shiny Amulet" in inventory:
         print("You hand the boy the Shiny Amulet. He smiles and gives you a strange key in return.")
         inventory.remove("Shiny Amulet")
         inventory.append("Strange Key")
         print("You put the Strange Key in your inventory. It might be useful later!")
+    elif action == "give" and "Shiny Amulet" not in inventory:
+        print("You don't have anything interesting to give the boy.")
+    elif action == "attack":
+        print("The boy looks shocked as you prepare to attack him!")
+        combat(player, "Young Boy", 50)
     else:
-        print("You don't have anything to give the boy.")
-
-def examine(item):
-    if item in inventory:
-        print(f"You examine the {item}.")
-    else:
-        print(f"You don't have {item} in your inventory.")
-
-def take(item):
-    print(f"You take the {item}.")
-    inventory.append(item)
+        print("Invalid choice. You stand there awkwardly.")
 
 def game_over(player):
-    print(f"Game Over, {player.name}. You have lost all your health.")
-    print("Better luck next time!")
-    exit() 
+    print(f"Game over! {player.name} has perished.")
+    play_again = input("Do you want to play again? (yes/no): ").lower()
+    if play_again == "yes":
+        start_your_trip()
+    else:
+        print("Thanks for playing!")
 
 start_your_trip()
