@@ -32,7 +32,7 @@ def makeAGuess(userGuess):
 # print(makeAGuess("SHANK"))
 
 def playGame(word):
-  print("Let's play wordle! /n Guess the Wordle in 6 tries. Each guess must be a valid 5-letter word. For each guess, a hint will tell you how many letters you've guessed correctly. A G represents a letter in the word and in the correct spot.. A Y represents a letter in the word but in the wrong spot. A - represents a letter not in the word in any spot. \n Guess below! \n")
+  print("To open this gate you must solve the 5 letter combination. A hint will tell you how many letters you've guessed correctly. A G represents a letter in the word and in the correct spot.. A Y represents a letter in the word but in the wrong spot. A - represents a letter not in the word in any spot. \n Guess below! \n")
 
   # TASK I: Build a loop that loops 6 times (representing the number of guesses a user has)
   for i in range(6):
