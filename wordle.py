@@ -45,8 +45,8 @@ def playGame(word):
     # TASK M: Check if hint = "GGGGG". If so the user has won. Print a win message and break the loop
     if hint == "GGGGG":
       print("Congratulations! You've guessed the word correctly!")
-      break
+      return True
 
   # TASK N: After the loop has finished, meaning the user has run out of guesses, check if hint != "GGGGG". If so, the user has lost. Print a lose message. 
-  if hint != "GGGGG":
     print("You lose, sad. The word was ", word)
+    return False

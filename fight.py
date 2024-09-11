@@ -1,5 +1,5 @@
 import random
-
+from inventory import Inventory
 
 def combat(player, opponent_name, opponent_health):
     print(f"{opponent_name} challenges you to a fight!")
@@ -61,3 +61,10 @@ def attack(player, damage):
     else:
         print("You barely escape the graveyard.")
         start_your_trip()
+
+def collect_loot(player):
+    print("You collect some special items from your defeated opponent.")
+    player.inventory.append("Healing Potion")
+    player.inventory.append("Mystic Dagger")
+    player.inventory.append("Magic Ring")
+    print("You received a Healing Potion, a Mystic Dagger, and a Magic Ring. They are added to your inventory.")
