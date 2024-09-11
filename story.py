@@ -1,40 +1,59 @@
 def start_your_trip():
     pass
+import random
 from player import Player
 from wordle import playGame
 from inventory import Inventory
 from fight import combat, attack
-import random
 from character import Character
 from inventory import Inventory 
 
 def start_your_trip():
 
-    player1 = Player("", 100) 
-    player1.name = input("Hello, what is your name? ")
+    player = Player("", 100) 
+    player.name = input("Enter your name to start. ")
 
-    print(f"Welcome, {player1.name}, to your adventure.")
-    print("You wake up in an empty field with no memory of how you got there.")
-    print("Suddenly, a man approaches you with a grin on his face.")
-    print("'Hey there! How about a game of rock-paper-scissors?'")
+    print(f"Your eyes open slowly, and you feel your head pounding. Your vision is blurry and one word echoes through your mind, {player.name}, {player.name}, {player.name}, {player.name}... ")
+    print("You collapse.")
+    print("Once again, your eyes slowly open while you adjust to the sunlight. You find yourself now in an empty field with no memory of how you got there.")
+    print("Heavy footsteps suddenly arise from the road behind you. You turn your head and see a man with a giant pitchfork in his hand and an equally giant cigar in his mouth. He approaches you with an eerie grin on his face.")
+    print("Mysterious Man: Haven't seen you around..")
     
+    choice = input("Mysterious Man: Where do you come from stranger? (Field/Lie) ").lower()
+    
+    if choice == "field":
+        print("I live here on the Field!")
+        print("Mysterious Man: That don't make sense.. I own this field. He raises his pitchfork.")
+        combat(player, "Mysterious Man", 100)
+        go(player)
+
+    elif choice == "lie":
+        print("I live down the road...")
+        print("Mystery Man: Huh.. better be back before nightfall then.")
+    else:
+        print("The Mysterious Man looks confused by your response.")
+
+    print("How about a game of rock-paper-scissors?'")
+
     choice = input("Do you want to play rock-paper-scissors or fight him? (play/fight) ").lower()
     
     if choice == "play":
-        play_rock_paper_scissors(player1)
+        play_rock_paper_scissors(player)
+        go(player)
     elif choice == "fight":
-        combat(player1, "Mysterious Man", 100)
+        combat(player, "Mysterious Man", 100)
+        go(player)
     else:
         print("You decide not to interact. The man walks away, leaving you alone.")
-    
-    print("Ahead of you, a sign reads 'Graveyard 5 miles North'.")
-    print("Behind you, a sign reads 'Sludge Swamp 10 miles South'.")
-    choice = input("Do you want to go North or South? (north/south) ").lower()
+        go(player)
+
+def go(player):
+    choice = input("Ahead of you, a sign reads 'Graveyard 5 miles North. Behind you, a sign reads 'Sludge Swamp 10 miles South. Do you want to go North or South? (north/south) ").lower()
     
     if choice == "north":
-        go_north(player1)
+        go_north(player)
     elif choice == "south":
-        go_south(player1)
+        go_south(player)
     else:
         print("Invalid choice. Please choose north or south.")
         start_your_trip()
@@ -108,7 +127,6 @@ def play_puzzle(player):
     print("Jeb pats you on the back. 'Go on then Boy!', he says.")
     print("After a while of searching you reach the gate.")
     success = playGame("START")
-    print(f"Debug: Puzzle success = {success}")
 
     if success:
         print("You solved the puzzle and opened the gate!")
