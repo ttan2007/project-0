@@ -33,9 +33,10 @@ def start_your_trip():
     else:
         print("The Mysterious Man looks confused by your response.")
 
-    print("How about a game of rock-paper-scissors?'")
+    print("Mysterious Man: The names Lancer.")
+    print("Lancer: I love me a fun game with a new stranger. Fancy a game of rock paper scissors? I never lose. If you win I might just give you a little reward...")
 
-    choice = input("Do you want to play rock-paper-scissors or fight him? (play/fight) ").lower()
+    choice = input("Do you choose to play rock-paper-scissors or choose to fight him for the reward? (play/fight) ").lower()
     
     if choice == "play":
         play_rock_paper_scissors(player)
@@ -63,28 +64,29 @@ def play_rock_paper_scissors(player):
     player_choice = input("Choose rock, paper, or scissors: ").lower()
     man_choice = random.choice(options)
     
-    print(f"The man chooses {man_choice}.")
+    print(f"Lancer chooses {man_choice}.")
     
     if player_choice == man_choice:
-        print("It's a tie! You both chose the same thing. The man laughs like a maniac.")
+        print("It's a tie! You both chose the same thing. Lancer laughs like a maniac.")
         play_rock_paper_scissors(player)  
     elif (player_choice == "rock" and man_choice == "scissors") or \
          (player_choice == "scissors" and man_choice == "paper") or \
          (player_choice == "paper" and man_choice == "rock"):
-        print("You win the game!")
+        print("You win!")
         give_special_item(player)
     else:
-        print("You lost. The man frowns in disappointment.")
+        print("You lost. Lancer frowns in disappointment.")
 
 def give_special_item(player):
-    special_item = "Shiny Amulet"
+    special_item = "Rusty old necklace"
     player.add_item(special_item)
-    print(f"The man hands you a {special_item}. He says, 'Hold on to this...'")
-    print("You put the amulet in your inventory.")
+    print(f"Lancer hands you a {special_item}. He says, 'Hold on to this...'")
+    print("Rusty old necklace.")
 
 def go_north(player):
     print("You walk into the ominous graveyard.")
     print("You run into an old man holding a lantern and a shovel.")
+    print("He looks deranged by the looks of it, clothes ripped and hair and beard growing wildly.")
     choice = input("Do you talk to him or run away? (talk/run) ").lower()
 
     if choice == "talk":
@@ -96,21 +98,21 @@ def go_north(player):
         go_north(player)
 
 def talk(player):
-    print("Old man: Hello.. my name is Jeb. Can you help me with a task?")
+    print("Old man: Hello stranger.. my name is Jeb. Can you help me with a task?")
     choice = input("Do you agree to help Jeb? (Y/N) ").upper()
     
     if choice == "Y":
         start_quest(player)
     elif choice == "N":
         print("Jeb looks disappointed. He swings his shovel at you!")
-        attack(player, 20)  
+        attack(player, 100, start_your_trip)  
     else:
         print("Invalid input.")
         talk(player)
 
 def run_away(player):
-    print("You run away from the graveyard back to the field.")
-    start_your_trip()
+    print("You try to run away but Jeb catches you and swings his shovel at you!")
+    attack(player, 100, start_your_trip)
 
 def start_quest(player):
     print("Jeb: There’s a gate at the end of this graveyard, but it’s locked by an old puzzle.")
@@ -120,8 +122,8 @@ def start_quest(player):
     if choice == "Y":
         play_puzzle(player)
     else:
-        print("You decline to solve the puzzle. Jeb is sad.")
-        start_your_trip()
+        print("Jeb looks disappointed. He swings his shovel at you!")
+        attack(player, 100, start_your_trip)  
 
 def play_puzzle(player):
     print("Jeb pats you on the back. 'Go on then Boy!', he says.")
@@ -130,6 +132,7 @@ def play_puzzle(player):
 
     if success:
         print("You solved the puzzle and opened the gate!")
+        unlock_gate(player)
     else:
         print("You failed the puzzle and lose 50 health points.")
         player.health -= 50
@@ -139,6 +142,32 @@ def play_puzzle(player):
             game_over(player)
         else:
             start_your_trip()
+
+
+def unlock_gate(player):
+    special_item = "Mysterious water chalice"
+    player.add_item(special_item)
+    print(f"The word puzzle falls to the ground as the gate opens.")
+    print(f"You explore the undiscovered parts of the graveyard and you reach a small fountain. In front of it, you find a {special_item} and pick it up.")
+    print("You put the chalice in your inventory.")
+    choice = input("Do you choose to drink the water or head south? (drink/south) ").lower()
+    if choice == "drink":
+        drink()
+    elif choice == "south":
+        go_south(player)
+    else:
+        print("Invalid choice. Please choose north or south.")
+        start_your_trip()
+
+def drink():
+    print("You drink the shimmering water and fall to your knees. You clutch to your stomach as the water burns your insides. Suddenly your head is filled with memories of your past as they flash before your eyes. Memories of another world where you were once a prince, a life of luxury and power. But you were also a prisoner, a prisoner of your own mind.")
+    print("You hear a voice in your head. It says: 'You are the chosen one. Save this world.'")
+    print("You feel a surge of power flow through you and you feel a sense of purpose.")
+    print("Jeb: You're a strange one. You're not like the others. You're not like me.")
+    print("You look at Jeb, who is standing there, watching you.")
+    print("Jeb comes closer and bows down at your feet.")
+    print("To be continued...")
+    print("Game Over Thank you for Playing!")
 
 def go_south(player):
     print("You head towards the Sludge Swamp.")
@@ -162,20 +191,31 @@ def go_south(player):
 def interact_with_boy(player):
     print("The young boy notices you and asks if you have anything interesting.")
     
-    action = input("Do you give him the amulet or attack him? (give/attack): ").lower()
+    action = input("Do you give him the necklace or attack him? (give/attack): ").lower()
     
-    if action == "give" and "Shiny Amulet" in player.inventory:
-        print("You hand the boy the Shiny Amulet. He smiles and gives you a strange key in return.")
-        player.remove_item("Shiny Amulet")
-        player.add_item("Strange Key")
-        print("You put the Strange Key in your inventory. It might be useful later!")
-    elif action == "give" and "Shiny Amulet" not in player.inventory:
-        print("You don't have anything interesting to give the boy.")
+    if action == "give" and "Rusty old necklace" in player.inventory:
+        print("You hand the boy the necklace. He smiles and gives you a strange chalice filled with shimmering water in return.")
+        print("This was my dads.. he gave it to me before he died. I'm glad you found it.")
+        player.remove_item("Rusty old necklace")
+        player.add_item("Mysterious water chalice")
+        end()
+    elif action == "give" and "Mysterious water chalice" not in player.inventory:
+        print("You don't have anything interesting to give the boy. Dissapointed, he tries to push you off the boat.")
+        attack(player, 100, start_your_trip)  
     elif action == "attack":
         print("The boy looks shocked as you prepare to attack him!")
-        combat(player, "Young Boy", 50)
+        combat(player, "Young Boy", 100)
+        end()
     else:
         print("Invalid choice. You stand there awkwardly.")
+
+def end():
+    print("You look around the boat. In a small hidden box you find a mysterious water chalice. You impulsively have a strong urge to drink the water.")
+    print("You drink the shimmering water and fall to your knees. You clutch to your stomach as the water burns your insides. Suddenly your head is filled with memories of your past as they flash before your eyes. Memories of another world where you were once a prince, a life of luxury and power. But you were also a prisoner, a prisoner of your own mind.")
+    print("You hear a voice in your head. It says: 'You are the chosen one. Save this world.'")
+    print("You feel a surge of power flow through you and you feel a sense of purpose.")
+    print("To be continued...")
+    print("Game Over Thank you for Playing!")
 
 def game_over(player):
     print(f"Game over! {player.name} has perished.")
