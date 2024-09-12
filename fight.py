@@ -1,5 +1,5 @@
 import random
-
+from inventory import Inventory
 
 def combat(player, opponent_name, opponent_health):
     print(f"{opponent_name} challenges you to a fight!")
@@ -51,13 +51,20 @@ def combat(player, opponent_name, opponent_health):
         print(f"\nYou were defeated by {opponent_name}.")
         game_over(player)
 
-def attack(player, damage):
-    print(f"Jeb attacks you! You lose {damage} health points.")
-    player.health -= damage 
-    print(f"Your health is now {player.health}.")
-    
+def attack(player, damage, callback=None):
+    player.health -= damage
+    print("He charges at you while screaming and you fall to the ground.")
+    print(f"He thrusts the shovel straight into your torso. You feel lightheaded as your vision blurs. Your health falls to {player.health}.")
     if player.health <= 0:
-        game_over(player)  
+        print("you died.")
+        if callback:
+            callback()
     else:
-        print("You barely escape the graveyard.")
-        start_your_trip()
+        print("You survived the attack!")
+
+def collect_loot(player):
+    print("You collect some special items from your defeated opponent.")
+    player.inventory.append("Healing Potion")
+    player.inventory.append("Mystic Dagger")
+    player.inventory.append("Magic Ring")
+    print("You received a Healing Potion, a Mystic Dagger, and a Magic Ring. They are added to your inventory.")
